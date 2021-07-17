@@ -1,0 +1,40 @@
+name: 雀魂麻将AI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: '0 22,14 * * *'
+  watch:
+    types: started
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: 初始化Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: 签到
+      run: |
+        # 建立一个venv环境并激活
+        python -m venv ./venv
+        .\venv\Scripts\activate.bat
+        # 安装必要的依赖
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        # pytorch
+        pip install torch===1.7.1 torchvision===0.8.2 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+        # 启动mitmprox
+        python -m majsoul_wrapper
+        
+        python main.py << EOF
+
+        EOF
+        done
