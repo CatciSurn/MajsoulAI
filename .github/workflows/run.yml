@@ -25,7 +25,7 @@ jobs:
       run: |
         # 建立一个venv环境并激活
         python -m venv ./venv
-        .\venv\Scripts\activate.bat
+        ./venv/Scripts/activate.bat
         # 安装必要的依赖
         python -m pip install --upgrade pip
         pip install -r requirements.txt
